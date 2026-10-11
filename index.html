@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naruto Blazing Revival – Tuto iOS (Mac + SideStore)</title>
+  <meta name="description" content="Guide fan-made, simple et pas à pas, pour installer Naruto Blazing Revival sur iPhone sans jailbreak avec un Mac, SideStore et LocalDevVPN." />
+  <meta name="theme-color" content="#0e0b09" />
+  <meta property="og:title" content="Naruto Blazing Revival – Tuto iOS (Mac + SideStore)" />
+  <meta property="og:description" content="Installe le client Revival sur ton iPhone, sans jailbreak. 7 missions, ~25 minutes." />
+  <meta property="og:type" content="website" />
+  <meta name="author" content="meardagoat" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🍥</text></svg>" />
+
+  <!-- Polices : Dela Gothic One (titres épais façon logo), Yuji Syuku (kanji pinceau), M PLUS Rounded 1c (texte lisible) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&family=Yuji+Syuku&display=swap" rel="stylesheet" />
+
+  <style>
+    /* =========================================================
+       1. VARIABLES & BASE
+       ========================================================= */
+    :root {
+      /* Nuit / encre */
+      --ink: #0e0b09;
+      --ink-2: #171009;
+      --ink-3: #22170e;
+      /* Bois & parchemin */
+      --wood: #4a2c15;
+      --wood-dark: #2a170a;
+      --paper: #f5e7c8;
+      --paper-2: #e9d3a3;
+      --paper-ink: #2b1a0c;
+      --paper-dim: #6b4a2a;
+      /* Chakra / feu */
+      --orange: #ff7b00;
+      --orange-2: #ff9d2e;
+      --yellow: #ffd23f;
+      --red: #d7263d;
+      --seal: #c8102e;
+      --gold: #f0c35a;
+      --gold-dark: #9a6a1f;
+      --blue: #2f7de1;
+      --blurple: #5865f2;
+      /* Texte sur fond sombre */
+      --text: #f6ead7;
+      --text-dim: #cbb89b;
+
+      --f-title: "Dela Gothic One", "Arial Black", system-ui, sans-serif;
+      --f-brush: "Yuji Syuku", "Hiragino Mincho ProN", serif;
+      --f-body: "M PLUS Rounded 1c", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+      --paper-noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .45 0 0 0 0 .3 0 0 0 0 .12 0 0 0 .22 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+
+    body {
+      margin: 0;
+      font-family: var(--f-body);
+      font-size: 1.04rem;
+      line-height: 1.7;
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 50% -5%, rgba(255, 123, 0, .18), transparent 65%),
+        radial-gradient(700px 600px at 100% 40%, rgba(200, 16, 46, .10), transparent 60%),
+        radial-gradient(700px 600px at 0% 75%, rgba(47, 125, 225, .08), transparent 60%),
+        var(--paper-noise),
+        var(--ink);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: var(--orange-2); }
+    img { max-width: 100%; display: block; }
+    :focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 6px; }
+    .container { width: min(100% - 2.2rem, 1100px); margin-inline: auto; }
+    .narrow { width: min(100% - 2.2rem, 860px); margin-inline: auto; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    .skip-link { position: absolute; left: 1rem; top: -100px; z-index: 100; background: var(--orange); color: #000; padding: .6rem 1rem; border-radius: 8px; font-weight: 800; }
+    .skip-link:focus { top: 1rem; }
+
+    /* Chemin d'accès dans les Réglages iOS */
+    .path {
+      display: flex; flex-wrap: wrap; align-items: center; gap: .3rem;
+      margin: .4rem 0 .9rem; font-size: .88rem; font-weight: 700;
+    }
+    .path span {
+      padding: .2rem .6rem; border-radius: 8px;
+      background: #fff; color: #1c1c1e; border: 1px solid #d6c39a;
+      box-shadow: 0 2px 0 #c9b082;
+    }
+    .path i { font-style: normal; color: var(--paper-dim); }
+
+    /* =========================================================
+       2. NAVIGATION (barre en bois)
+       ========================================================= */
+    .nav {
+      position: sticky; top: 0; z-index: 50;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, .06), transparent 40%),
+        repeating-linear-gradient(90deg, rgba(0, 0, 0, .08) 0 3px, transparent 3px 9px),
+        linear-gradient(180deg, #3b2210, #24140a);
+      border-bottom: 3px solid var(--gold-dark);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, .6);
+    }
+    .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 62px; gap: 1rem; }
+    .nav__brand {
+      display: flex; align-items: center; gap: .55rem; text-decoration: none;
+      font-family: var(--f-title); font-size: 1rem; color: var(--yellow); letter-spacing: .04em;
+      text-shadow: 0 2px 0 #000;
+    }
+    .nav__brand svg { width: 28px; height: 28px; }
+    .nav__brand small { color: var(--text); font-size: .75em; }
+    .nav__links { display: none; list-style: none; margin: 0; padding: 0; gap: .3rem; }
+    .nav__links a {
+      display: block; padding: .4rem .75rem; border-radius: 8px; text-decoration: none;
+      color: var(--text-dim); font-weight: 800; font-size: .88rem; transition: background .2s, color .2s;
+    }
+    .nav__links a:hover, .nav__links a.is-active { color: #1a0b00; background: var(--orange-2); }
+    .nav__cta { font-family: var(--f-title); font-size: .8rem; padding: .45rem .9rem !important; }
+    @media (min-width: 900px) { .nav__links { display: flex; } }
+
+    /* =========================================================
+       3. BOUTONS STYLE "JEU MOBILE"
+       ========================================================= */
+    .btn {
+      --c1: #ffc061; --c2: var(--orange); --c3: #d94f00; --edge: #7a2e00; --rim: #ffe39a;
+      position: relative; display: inline-flex; align-items: center; justify-content: center; gap: .6rem;
+      padding: .9rem 1.6rem; min-height: 56px;
+      font-family: var(--f-title); font-size: 1rem; letter-spacing: .03em; color: #fff; text-decoration: none;
+      text-shadow: 0 2px 0 var(--edge), 0 0 6px rgba(0, 0, 0, .3);
+      background: linear-gradient(180deg, var(--c1) 0%, var(--c2) 50%, var(--c3) 100%);
+      border: 3px solid var(--rim); border-radius: 14px;
+      box-shadow:
+        0 0 0 3px #1a0b00,
+        inset 0 3px 0 rgba(255, 255, 255, .45),
+        inset 0 -5px 0 rgba(0, 0, 0, .18),
+        0 7px 0 3px var(--edge),
+        0 16px 26px rgba(0, 0, 0, .55);
+      transition: transform .15s ease, box-shadow .15s ease, filter .2s ease;
+      cursor: pointer;
+    }
+    .btn:hover { transform: translateY(-3px); filter: brightness(1.08) drop-shadow(0 0 14px rgba(255, 157, 46, .7)); }
+    .btn:active { transform: translateY(5px); box-shadow: 0 0 0 3px #1a0b00, inset 0 3px 0 rgba(255,255,255,.45), 0 2px 0 3px var(--edge), 0 6px 12px rgba(0,0,0,.5); }
+    .btn svg { width: 1.3em; height: 1.3em; flex-shrink: 0; filter: drop-shadow(0 2px 0 var(--edge)); }
+    .btn--discord { --c1: #8c96ff; --c2: var(--blurple); --c3: #3c45c9; --edge: #1d2275; --rim: #c9ceff; }
+    .btn--discord:hover { filter: brightness(1.08) drop-shadow(0 0 14px rgba(88, 101, 242, .8)); }
+
+    /* =========================================================
+       4. HERO
+       ========================================================= */
+    .hero { position: relative; overflow: hidden; padding: clamp(2.5rem, 7vw, 4.5rem) 0 clamp(3.5rem, 8vw, 6rem); text-align: center; isolation: isolate; }
+
+    /* Kanji géant en fond */
+    .hero__kanji {
+      position: absolute; z-index: -2; top: 50%; left: 50%; transform: translate(-50%, -55%);
+      font-family: var(--f-brush); font-size: clamp(16rem, 55vw, 34rem); line-height: 1;
+      color: rgba(200, 16, 46, .13); pointer-events: none; user-select: none;
+    }
+    /* Flammes en bas */
+    .hero__flames {
+      position: absolute; z-index: -1; left: -10%; right: -10%; bottom: -40px; height: 300px;
+      background:
+        radial-gradient(35% 90% at 15% 100%, rgba(215, 38, 61, .55), transparent 70%),
+        radial-gradient(30% 110% at 38% 100%, rgba(255, 123, 0, .6), transparent 70%),
+        radial-gradient(25% 120% at 55% 100%, rgba(255, 210, 63, .45), transparent 70%),
+        radial-gradient(30% 100% at 75% 100%, rgba(255, 123, 0, .55), transparent 70%),
+        radial-gradient(35% 85% at 95% 100%, rgba(215, 38, 61, .5), transparent 70%);
+      filter: blur(14px); transform-origin: bottom;
+      animation: flicker 2.6s ease-in-out infinite alternate;
+    }
+    .embers { position: absolute; inset: 0; z-index: -1; pointer-events: none; }
+    .embers i {
+      position: absolute; bottom: -10px; width: var(--s, 4px); height: var(--s, 4px); border-radius: 50%;
+      background: var(--yellow); box-shadow: 0 0 8px 2px var(--orange);
+      animation: rise var(--d, 7s) linear var(--delay, 0s) infinite; opacity: 0;
+    }
+
+    /* Shurikens décoratifs */
+    .hero__shuriken { position: absolute; z-index: -1; width: 70px; color: #3a3f47; opacity: .9; animation: spin 5s linear infinite; filter: drop-shadow(0 4px 6px rgba(0,0,0,.6)); }
+    .hero__shuriken--a { top: 12%; left: 6%; }
+    .hero__shuriken--b { top: 58%; right: 5%; width: 54px; animation-duration: 3.5s; animation-direction: reverse; }
+    @media (max-width: 700px) { .hero__shuriken { width: 42px; } .hero__shuriken--a { top: auto; bottom: 34%; left: 3%; } .hero__shuriken--b { top: 40%; right: 2%; width: 34px; } }
+
+    /* ---- Logo ---- */
+    .logo-wrap { display: grid; place-items: center; margin-bottom: 1rem; }
+    .logo-img { display: none; max-height: 260px; width: auto; filter: drop-shadow(0 10px 25px rgba(0,0,0,.7)); }
+    .has-logo .logo-img { display: block; }
+    .has-logo .logo { display: none; }
+
+    .logo {
+      position: relative; display: inline-grid; justify-items: center;
+      transform: rotate(-3deg);
+      filter: drop-shadow(0 12px 0 rgba(0, 0, 0, .45)) drop-shadow(0 0 30px rgba(255, 123, 0, .45));
+    }
+    .logo__swirl {
+      position: absolute; z-index: -1; width: clamp(150px, 34vw, 260px); top: 50%; left: 50%;
+      transform: translate(-50%, -50%); color: var(--orange); opacity: .35;
+      animation: spin 18s linear infinite;
+    }
+    .logo__top {
+      font-family: var(--f-title); font-size: clamp(1.1rem, 4.2vw, 2rem); letter-spacing: .35em; padding-left: .35em;
+      color: #fff; -webkit-text-stroke: 6px #140700; paint-order: stroke fill;
+      text-shadow: 0 3px 0 #140700;
+    }
+    /* Texte du logo : contour noir épais + remplissage dégradé feu (deux couches superposées) */
+    .logo__main, .logo__rev {
+      position: relative; font-family: var(--f-title); line-height: .95;
+      color: #140700; -webkit-text-stroke: .16em #140700;
+    }
+    .logo__main::after, .logo__rev::after {
+      content: attr(data-text); position: absolute; left: 0; top: 0; -webkit-text-stroke: 0;
+      background: linear-gradient(180deg, #fff6c4 0%, var(--yellow) 28%, var(--orange) 62%, var(--red) 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .logo__main { font-size: clamp(3.4rem, 15vw, 8.2rem); letter-spacing: .02em; }
+    .logo__rev  { font-size: clamp(1.9rem, 8vw, 4.2rem); margin-top: -.15em; transform: skewX(-8deg); }
+    .logo__rev::after { background: linear-gradient(180deg, #e8f4ff 0%, #8ec5ff 40%, var(--blue) 75%, #1846a3 100%); -webkit-background-clip: text; background-clip: text; }
+
+    /* Bannière rouge sous le logo */
+    .ribbon {
+      position: relative; display: inline-block; margin: 1.1rem 0 1.4rem; padding: .55rem 2.6rem;
+      font-family: var(--f-title); font-size: clamp(.85rem, 2.6vw, 1.15rem); color: #fff; letter-spacing: .06em;
+      background: linear-gradient(180deg, #e23a4f, var(--seal) 60%, #8f0b20);
+      clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 50%, 100% 100%, 0 100%, 18px 50%);
+      text-shadow: 0 2px 0 #5a0613;
+    }
+    .ribbon::before { content: ""; position: absolute; inset: 4px 22px; border-top: 1px solid rgba(255,255,255,.35); border-bottom: 1px solid rgba(0,0,0,.25); pointer-events: none; }
+
+    .hero__lead { max-width: 620px; margin: 0 auto 2rem; font-size: clamp(1.02rem, 2.4vw, 1.18rem); color: var(--text); }
+    .hero__lead strong { color: var(--yellow); }
+    .hero__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.4rem 1.2rem; }
+    .hero__stats { display: flex; justify-content: center; flex-wrap: wrap; gap: .6rem; margin-top: 2.2rem; }
+    .stat {
+      padding: .35rem .9rem; border-radius: 999px; font-weight: 800; font-size: .88rem;
+      background: rgba(0, 0, 0, .55); border: 2px solid var(--gold-dark); color: var(--text);
+    }
+    .stat b { color: var(--yellow); font-family: var(--f-title); font-weight: 400; }
+
+    /* =========================================================
+       5. SÉPARATEUR (corde + shuriken)
+       ========================================================= */
+    .divider { display: flex; align-items: center; gap: 1rem; width: min(100% - 2.2rem, 700px); margin: 0 auto; color: var(--gold); }
+    .divider::before, .divider::after { content: ""; flex: 1; height: 3px; border-radius: 3px; background: repeating-linear-gradient(90deg, var(--gold-dark) 0 10px, var(--gold) 10px 14px); opacity: .7; }
+    .divider svg { width: 32px; animation: spin 8s linear infinite; }
+
+    /* =========================================================
+       6. TITRES DE SECTION (sceau rouge + coup de pinceau)
+       ========================================================= */
+    section { padding: clamp(3rem, 7vw, 5rem) 0; }
+    .sec-title { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+    .seal {
+      flex-shrink: 0; display: grid; place-items: center; width: 64px; height: 64px;
+      font-family: var(--f-brush); font-size: 2.3rem; line-height: 1; color: #fff3e6;
+      background: radial-gradient(circle at 30% 25%, #e3384d, var(--seal) 55%, #7d0a1c);
+      border-radius: 10px; transform: rotate(-6deg);
+      box-shadow: inset 0 0 0 3px rgba(255, 255, 255, .25), 0 6px 14px rgba(0, 0, 0, .6);
+    }
+    .sec-kicker { margin: 0; font-weight: 800; font-size: .82rem; letter-spacing: .2em; text-transform: uppercase; color: var(--orange-2); }
+    .sec-title h2 {
+      position: relative; display: inline-block; margin: .1rem 0 0;
+      font-family: var(--f-title); font-weight: 400; font-size: clamp(1.6rem, 5vw, 2.5rem); line-height: 1.15; color: #fff;
+      text-shadow: 0 3px 0 #000;
+    }
+    .sec-title h2::after {
+      content: ""; position: absolute; z-index: -1; left: -4px; right: -10px; bottom: -.32em; height: .28em;
+      background: linear-gradient(90deg, var(--orange), rgba(255, 123, 0, .2));
+      clip-path: polygon(0 35%, 4% 0, 97% 12%, 100% 60%, 94% 100%, 2% 86%);
+    }
+    .sec-intro { max-width: 680px; color: var(--text-dim); margin: 0 0 2.2rem; }
+    .sec-intro strong { color: var(--text); }
+
+    /* =========================================================
+       7. PARCHEMIN (carte claire avec rouleaux en bois)
+       ========================================================= */
+    .scroll {
+      position: relative; color: var(--paper-ink);
+      background: var(--paper-noise), radial-gradient(ellipse at center, #fbf1da 0%, var(--paper) 55%, var(--paper-2) 100%);
+      border-radius: 4px; padding: clamp(1.4rem, 4vw, 2.2rem);
+      box-shadow: inset 0 0 50px rgba(120, 70, 20, .3), 0 20px 40px rgba(0, 0, 0, .55);
+      margin: 18px 0;
+    }
+    .scroll--rods::before, .scroll--rods::after {
+      content: ""; position: absolute; left: -14px; right: -14px; height: 18px; border-radius: 9px;
+      background: linear-gradient(180deg, #8a5a2b, var(--wood) 45%, var(--wood-dark));
+      box-shadow: 0 4px 8px rgba(0, 0, 0, .5), inset 0 2px 0 rgba(255, 255, 255, .2);
+    }
+    .scroll--rods::before { top: -12px; }
+    .scroll--rods::after { bottom: -12px; }
+    .scroll strong { color: #000; }
+    .scroll a { color: #b33a00; font-weight: 800; }
+
+    /* =========================================================
+       8. "LE PLAN EN 3 SCEAUX" + LEXIQUE
+       ========================================================= */
+    .plan { display: grid; gap: 1.2rem; margin-top: 3rem; text-align: left; }
+    @media (min-width: 820px) { .plan { grid-template-columns: repeat(3, 1fr); } }
+    .plan__item {
+      position: relative; padding: 1.3rem 1.2rem 1.2rem 4.6rem; border-radius: 14px;
+      background: linear-gradient(180deg, rgba(34, 23, 14, .92), rgba(14, 11, 9, .92));
+      border: 2px solid var(--gold-dark);
+      box-shadow: inset 0 0 0 1px rgba(240, 195, 90, .25), 0 10px 24px rgba(0, 0, 0, .5);
+    }
+    .plan__item .num {
+      position: absolute; left: 1rem; top: 1.2rem; width: 46px; height: 46px; display: grid; place-items: center;
+      font-family: var(--f-title); font-size: 1.3rem; color: #1a0b00;
+      background: radial-gradient(circle at 35% 30%, #fff1b8, var(--yellow) 45%, var(--orange));
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    .plan__item h3 { margin: 0 0 .2rem; font-family: var(--f-title); font-weight: 400; font-size: 1.1rem; color: var(--yellow); }
+    .plan__item p { margin: 0; color: var(--text-dim); font-size: .95rem; }
+
+    .lexicon { display: grid; gap: 1rem; }
+    @media (min-width: 720px) { .lexicon { grid-template-columns: 1fr 1fr; } }
+    .lexicon dt { display: flex; align-items: center; gap: .6rem; font-family: var(--f-title); font-size: 1.05rem; color: #000; }
+    .lexicon dt span { font-size: 1.4rem; }
+    .lexicon dd { margin: .25rem 0 0; color: #3f2a16; font-size: .97rem; }
+    .lexicon > div { padding: 1rem 1.1rem; border-radius: 10px; background: rgba(255, 255, 255, .45); border: 1px dashed rgba(107, 74, 42, .45); }
+
+    /* =========================================================
+       9. ÉQUIPEMENT (prérequis façon inventaire)
+       ========================================================= */
+    .inventory { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+    @media (min-width: 640px) { .inventory { grid-template-columns: 1fr 1fr; } }
+    @media (min-width: 980px) { .inventory { grid-template-columns: repeat(3, 1fr); } }
+    .item {
+      display: grid; grid-template-columns: 64px 1fr; gap: .9rem; align-items: center;
+      padding: .9rem; border-radius: 14px;
+      background: linear-gradient(180deg, #2a1c11, #170f09);
+      border: 2px solid var(--gold-dark);
+      box-shadow: inset 0 0 0 1px rgba(240, 195, 90, .2);
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+    .item:hover { transform: translateY(-4px); border-color: var(--gold); box-shadow: inset 0 0 0 1px rgba(240,195,90,.4), 0 0 20px rgba(255, 157, 46, .35); }
+    .item__icon {
+      width: 64px; height: 64px; display: grid; place-items: center; font-size: 1.9rem; border-radius: 12px;
+      background: radial-gradient(circle at 50% 35%, rgba(255, 210, 63, .35), transparent 70%), #0b0806;
+      border: 2px solid var(--gold);
+      box-shadow: inset 0 0 12px rgba(0, 0, 0, .8);
+    }
+    .item strong { display: block; color: #fff; font-weight: 800; line-height: 1.35; }
+    .item span { display: block; color: var(--text-dim); font-size: .9rem; line-height: 1.5; margin-top: .15rem; }
+    .item em { font-style: normal; color: var(--yellow); font-size: .75rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+
+    .notice {
+      display: flex; gap: .9rem; align-items: flex-start; margin-top: 1.4rem;
+      padding: 1rem 1.2rem; border-radius: 12px;
+      background: rgba(200, 16, 46, .14); border: 2px solid rgba(215, 38, 61, .6);
+    }
+    .notice--blue { background: rgba(47, 125, 225, .12); border-color: rgba(47, 125, 225, .55); }
+    .notice__icon { font-size: 1.5rem; line-height: 1.3; }
+    .notice p { margin: 0; }
+    .notice strong { color: #fff; }
+
+    /* Emplacement image (à remplacer par tes propres visuels) */
+    .image-placeholder {
+      display: grid; place-items: center; text-align: center; min-height: 200px; margin-top: 1.4rem; padding: 1.5rem;
+      border-radius: 14px; border: 3px dashed var(--gold-dark); color: var(--text-dim); font-weight: 700;
+      background: repeating-linear-gradient(-45deg, rgba(240, 195, 90, .05) 0 14px, transparent 14px 28px), rgba(0, 0, 0, .35);
+    }
+    .image-placeholder small { display: block; font-weight: 500; opacity: .8; margin-top: .3rem; }
+
+    /* Fan-art SVG */
+    .fanart {
+      margin: 1.6rem 0 0; border-radius: 14px; overflow: hidden;
+      border: 3px solid var(--gold-dark); box-shadow: 0 0 0 3px #120a04, 0 20px 40px rgba(0, 0, 0, .55);
+    }
+    .fanart svg { display: block; width: 100%; height: auto; }
+    .fa-glow { animation: moon 5s ease-in-out infinite alternate; transform-origin: 820px 210px; }
+    .fa-leaves { animation: drift 7s ease-in-out infinite alternate; }
+    @keyframes moon { from { opacity: .75; } to { opacity: 1; } }
+    @keyframes drift { from { transform: translate(0, 0); } to { transform: translate(-24px, 14px); } }
+
+    /* Signature de l'auteur */
+    .author {
+      display: inline-flex; align-items: center; gap: .6rem; margin: 2rem 0 0;
+      font-weight: 700; color: var(--text-dim);
+    }
+    .author a { font-family: var(--f-title); color: var(--yellow); text-decoration: none; }
+    .author a:hover { text-decoration: underline; }
+    .author__seal {
+      display: grid; place-items: center; width: 34px; height: 34px; border-radius: 7px; transform: rotate(-6deg);
+      font-family: var(--f-brush); font-size: 1.2rem; color: #fff; background: var(--seal);
+    }
+    .author + .hero__stats { margin-top: 1rem; }
+
+    /* =========================================================
+       10. MISSIONS (étapes)
+       ========================================================= */
+    .progress {
+      position: sticky; top: 70px; z-index: 30; margin-bottom: 2rem;
+      display: flex; align-items: center; gap: 1rem; padding: .7rem 1rem; border-radius: 14px;
+      background: rgba(14, 11, 9, .92); border: 2px solid var(--gold-dark);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, .55); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    }
+    .progress__label { font-family: var(--f-title); font-size: .85rem; white-space: nowrap; color: var(--yellow); }
+    .progress__bar { flex: 1; height: 14px; border-radius: 99px; background: #000; border: 2px solid #3d2a14; overflow: hidden; }
+    .progress__fill {
+      height: 100%; width: 0%; border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), #6fd0ff 50%, #fff); box-shadow: 0 0 12px #6fd0ff;
+      transition: width .5s cubic-bezier(.2, .8, .2, 1);
+    }
+    .progress__count { font-family: var(--f-title); font-size: .9rem; min-width: 3ch; text-align: right; }
+
+    .missions { list-style: none; margin: 0; padding: 0; display: grid; gap: 2.2rem; counter-reset: m; position: relative; }
+    .missions::before {
+      content: ""; position: absolute; left: 30px; top: 0; bottom: 0; width: 4px; z-index: -1;
+      background: repeating-linear-gradient(180deg, var(--gold-dark) 0 12px, transparent 12px 20px);
+    }
+
+    .mission { position: relative; }
+    .mission__card {
+      position: relative; overflow: hidden; border-radius: 14px; color: var(--paper-ink);
+      background: var(--paper-noise), radial-gradient(ellipse at 50% 30%, #fcf3de, var(--paper) 60%, var(--paper-2));
+      border: 3px solid var(--gold-dark);
+      box-shadow: 0 0 0 3px #120a04, inset 0 0 40px rgba(120, 70, 20, .25), 0 18px 34px rgba(0, 0, 0, .55);
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .mission:hover .mission__card { transform: translateY(-4px); box-shadow: 0 0 0 3px #120a04, inset 0 0 40px rgba(120,70,20,.25), 0 0 26px rgba(255, 157, 46, .4), 0 22px 40px rgba(0,0,0,.6); }
+
+    .mission__head {
+      display: flex; align-items: center; flex-wrap: wrap; gap: .6rem 1rem; padding: .75rem 1.1rem;
+      background: linear-gradient(180deg, #3d2210, #23130a); color: var(--text);
+      border-bottom: 3px solid var(--gold-dark);
+    }
+    .mission__no { font-family: var(--f-title); font-size: 1.05rem; color: var(--yellow); letter-spacing: .04em; }
+    .rank {
+      display: grid; place-items: center; width: 38px; height: 42px;
+      font-family: var(--f-title); font-size: 1.15rem; color: #fff; text-shadow: 0 2px 0 rgba(0, 0, 0, .5);
+      clip-path: polygon(50% 0, 100% 22%, 100% 78%, 50% 100%, 0 78%, 0 22%);
+    }
+    .rank--D { background: linear-gradient(180deg, #7bd88f, #2e9447); }
+    .rank--C { background: linear-gradient(180deg, #6fb6ff, #2462c9); }
+    .rank--B { background: linear-gradient(180deg, #c38bff, #7a33d1); }
+    .rank--A { background: linear-gradient(180deg, #ff8a8a, #c41d33); }
+    .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin-left: auto; }
+    .chip { padding: .15rem .6rem; border-radius: 99px; font-size: .78rem; font-weight: 800; background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2); white-space: nowrap; }
+
+    .mission__body { padding: 1.2rem 1.3rem 1.3rem; }
+    .mission__body h3 { margin: 0 0 .3rem; font-family: var(--f-title); font-weight: 400; font-size: clamp(1.2rem, 3.4vw, 1.5rem); line-height: 1.25; color: #1a0d03; }
+    .goal { margin: 0 0 .9rem; color: var(--paper-dim); font-weight: 700; }
+    .goal::before { content: "🎯 "; }
+
+    .todo { margin: 0; padding: 0; list-style: none; counter-reset: t; display: grid; gap: .55rem; }
+    .todo li { position: relative; padding-left: 2.3rem; counter-increment: t; }
+    .todo li::before {
+      content: counter(t); position: absolute; left: 0; top: .1rem; width: 1.65rem; height: 1.65rem; border-radius: 50%;
+      display: grid; place-items: center; font-family: var(--f-title); font-size: .8rem; color: #fff;
+      background: var(--orange); box-shadow: 0 2px 0 #8a3a00;
+    }
+    .todo .where { display: inline-block; font-size: .78rem; font-weight: 800; padding: 0 .45rem; border-radius: 6px; background: #2b1a0c; color: var(--yellow); margin-right: .25rem; vertical-align: 1px; }
+    .tip { margin: .9rem 0 0; padding: .7rem .9rem; border-radius: 10px; font-size: .93rem; background: rgba(47, 125, 225, .1); border-left: 4px solid var(--blue); }
+    .check {
+      margin: 1rem 0 0; padding: .7rem .9rem; border-radius: 10px; font-size: .95rem;
+      background: rgba(46, 148, 71, .14); border-left: 4px solid #2e9447;
+    }
+    .check b { color: #1e6b31; }
+
+    .mission__foot { display: flex; justify-content: flex-end; padding: 0 1.3rem 1.2rem; }
+    .done-btn {
+      display: inline-flex; align-items: center; gap: .5rem; cursor: pointer;
+      font-family: var(--f-body); font-weight: 800; font-size: .92rem; color: var(--paper-ink);
+      padding: .55rem 1rem; border-radius: 10px; background: #fff8e8; border: 2px solid var(--gold-dark);
+      box-shadow: 0 3px 0 var(--gold-dark); transition: transform .15s, background .2s;
+    }
+    .done-btn:hover { transform: translateY(-2px); background: #fff; }
+    .done-btn .box { width: 20px; height: 20px; border-radius: 5px; border: 2px solid var(--gold-dark); display: grid; place-items: center; font-size: .8rem; color: transparent; }
+    .mission.is-done .done-btn { background: #2e9447; color: #fff; border-color: #1e6b31; box-shadow: 0 3px 0 #1e6b31; }
+    .mission.is-done .done-btn .box { background: #fff; color: #2e9447; border-color: #fff; }
+
+    /* Tampon "完" (terminé) */
+    .stamp {
+      position: absolute; right: 18px; top: 64px; width: 84px; height: 84px; display: grid; place-items: center;
+      font-family: var(--f-brush); font-size: 3rem; color: var(--seal);
+      border: 4px solid var(--seal); border-radius: 50%;
+      transform: rotate(-14deg) scale(1.8); opacity: 0; pointer-events: none;
+      transition: transform .35s cubic-bezier(.3, 1.6, .5, 1), opacity .2s;
+      mix-blend-mode: multiply;
+    }
+    .mission.is-done .stamp { opacity: .85; transform: rotate(-14deg) scale(1); }
+
+    .reminder { margin-top: 2.6rem; }
+    .reminder h3 { margin: 0 0 .4rem; font-family: var(--f-title); font-weight: 400; font-size: 1.25rem; color: #1a0d03; }
+    .reminder p { margin: 0; }
+
+    /* =========================================================
+       11. DÉPANNAGE (accordéons "Kai !")
+       ========================================================= */
+    .faq { display: grid; gap: 1rem; }
+    .faq details {
+      border-radius: 14px; overflow: hidden;
+      background: linear-gradient(180deg, #24170d, #150e08); border: 2px solid var(--gold-dark);
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .faq details[open] { border-color: var(--orange); box-shadow: 0 0 22px rgba(255, 123, 0, .3); }
+    .faq summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; gap: .9rem;
+      padding: 1rem 1.1rem; font-weight: 800; font-size: 1.02rem; color: #fff;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary .q { flex-shrink: 0; font-size: 1.4rem; }
+    .faq summary::after {
+      content: "解"; margin-left: auto; flex-shrink: 0; width: 38px; height: 38px; display: grid; place-items: center;
+      font-family: var(--f-brush); font-size: 1.3rem; color: #fff; border-radius: 8px;
+      background: var(--seal); transition: transform .3s;
+    }
+    .faq details[open] summary::after { transform: rotate(360deg); background: var(--orange); }
+    .faq__answer {
+      margin: 0 1rem 1rem; padding: 1rem 1.1rem; border-radius: 10px; color: var(--paper-ink);
+      background: var(--paper-noise), var(--paper);
+    }
+    .faq__answer p { margin: 0 0 .5rem; font-weight: 800; color: #b33a00; }
+    .faq__answer ul { margin: 0; padding-left: 1.2rem; }
+    .faq__answer li { margin-bottom: .3rem; }
+    .faq__answer li::marker { content: "✦ "; color: var(--orange); }
+
+    /* =========================================================
+       12. RÈGLES DU SHINOBI (disclaimer)
+       ========================================================= */
+    .rules { list-style: none; margin: 0; padding: 0; display: grid; gap: .9rem; }
+    .rules li { display: grid; grid-template-columns: 42px 1fr; gap: .8rem; align-items: start; }
+    .rules .ico { width: 42px; height: 42px; display: grid; place-items: center; font-size: 1.3rem; border-radius: 10px; background: rgba(200, 16, 46, .12); border: 2px solid rgba(200, 16, 46, .45); }
+
+    /* =========================================================
+       13. RESSOURCES
+       ========================================================= */
+    .res-grid { display: grid; gap: 1.2rem; }
+    @media (min-width: 700px) { .res-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1080px) { .res-grid { grid-template-columns: repeat(4, 1fr); } }
+    .res {
+      display: flex; flex-direction: column; gap: .5rem; padding: 1.4rem; border-radius: 16px; text-decoration: none; color: var(--text);
+      background: linear-gradient(180deg, #2a1c11, #140d08); border: 2px solid var(--gold-dark);
+      box-shadow: inset 0 0 0 1px rgba(240, 195, 90, .2), 0 12px 24px rgba(0, 0, 0, .45);
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+    }
+    .res:hover { transform: translateY(-6px) rotate(-.5deg); border-color: var(--gold); box-shadow: inset 0 0 0 1px rgba(240,195,90,.4), 0 0 26px rgba(255, 157, 46, .4); }
+    .res__icon { font-size: 2.2rem; }
+    .res h3 { margin: 0; font-family: var(--f-title); font-weight: 400; font-size: 1.1rem; color: var(--yellow); }
+    .res p { margin: 0; flex: 1; color: var(--text-dim); font-size: .95rem; }
+    .res__go { font-weight: 800; color: var(--orange-2); }
+
+    /* =========================================================
+       14. FOOTER & DIVERS
+       ========================================================= */
+    footer { padding: 2.5rem 0 3.5rem; text-align: center; color: var(--text-dim); font-size: .85rem; border-top: 3px solid var(--wood); background: rgba(0, 0, 0, .35); }
+    footer p { margin: .3rem 0; }
+    .back-top {
+      position: fixed; right: 1rem; bottom: 1rem; z-index: 40; width: 52px; height: 52px; display: grid; place-items: center;
+      border-radius: 50%; background: #1a0f07; border: 3px solid var(--gold); color: var(--gold);
+      opacity: 0; pointer-events: none; transform: translateY(12px); transition: opacity .3s, transform .3s;
+    }
+    .back-top svg { width: 30px; animation: spin 4s linear infinite; }
+    .back-top.is-visible { opacity: 1; pointer-events: auto; transform: none; }
+    .toast {
+      position: fixed; left: 50%; bottom: 1.4rem; z-index: 60; transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+      max-width: calc(100% - 2rem); padding: .8rem 1.1rem; border-radius: 12px; text-align: center; font-weight: 700;
+      background: var(--paper); color: var(--paper-ink); border: 3px solid var(--gold-dark); box-shadow: 0 12px 30px rgba(0, 0, 0, .6);
+      transition: opacity .3s, transform .3s;
+    }
+    .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+    /* =========================================================
+       15. ANIMATIONS
+       ========================================================= */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .logo__swirl { animation-name: spin-center; }
+    @keyframes spin-center { from { transform: translate(-50%, -50%) rotate(0); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+    @keyframes flicker {
+      0% { transform: scaleY(1); opacity: .85; }
+      50% { transform: scaleY(1.12) scaleX(1.02); opacity: 1; }
+      100% { transform: scaleY(.95); opacity: .8; }
+    }
+    @keyframes rise {
+      0% { transform: translate(0, 0); opacity: 0; }
+      10% { opacity: 1; }
+      100% { transform: translate(var(--dx, 30px), -520px); opacity: 0; }
+    }
+
+    .js .reveal { opacity: 0; transform: translateY(30px); transition: opacity .6s ease, transform .6s cubic-bezier(.2, .8, .2, 1); }
+    .js .reveal.is-visible { opacity: 1; transform: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+      .embers { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Aller au contenu</a>
+
+  <!-- Icônes réutilisables (dessinées à la main, aucun asset officiel) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="shuriken" viewBox="0 0 100 100">
+      <path fill="currentColor" fill-rule="evenodd" d="M50 2 L61 39 L98 50 L61 61 L50 98 L39 61 L2 50 L39 39 Z M50 43 a7 7 0 1 0 0.01 0 Z" />
+      <path fill="rgba(255,255,255,.25)" d="M50 2 L61 39 L50 43 Z M98 50 L61 61 L57 50 Z M50 98 L39 61 L50 57 Z M2 50 L39 39 L43 50 Z" />
+    </symbol>
+    <symbol id="swirl" viewBox="0 0 100 100">
+      <path fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round"
+        d="M50 50 a4 4 0 0 1 8 0 a8 8 0 0 1 -16 0 a12 12 0 0 1 24 0 a16 16 0 0 1 -32 0 a20 20 0 0 1 40 0 a24 24 0 0 1 -48 0 a28 28 0 0 1 56 0 a32 32 0 0 1 -64 0" />
+    </symbol>
+  </svg>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="nav__brand" href="#top" aria-label="Retour en haut">
+        <svg aria-hidden="true" style="color:var(--orange)"><use href="#swirl" /></svg>
+        Blazing <small>Revival</small>
+      </a>
+      <nav aria-label="Navigation principale">
+        <ul class="nav__links">
+          <li><a href="#lexique">Lexique</a></li>
+          <li><a href="#prerequis">Équipement</a></li>
+          <li><a href="#etapes">Missions</a></li>
+          <li><a href="#troubleshooting">Dépannage</a></li>
+          <li><a href="#disclaimer">Règles</a></li>
+          <li><a href="#ressources">Liens</a></li>
+        </ul>
+      </nav>
+      <a class="btn nav__mobile nav__cta" href="#etapes" style="min-height:40px">Le tuto</a>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================== 1. HERO ===================== -->
+    <section class="hero" id="top">
+      <div class="hero__kanji" aria-hidden="true">忍</div>
+      <div class="hero__flames" aria-hidden="true"></div>
+      <div class="embers" aria-hidden="true"></div>
+      <svg class="hero__shuriken hero__shuriken--a" viewBox="0 0 100 100" aria-hidden="true"><use href="#shuriken" /></svg>
+      <svg class="hero__shuriken hero__shuriken--b" viewBox="0 0 100 100" aria-hidden="true"><use href="#shuriken" /></svg>
+
+      <div class="container">
+        <h1 class="sr-only">Naruto Blazing Revival – Tuto iOS (Mac + SideStore)</h1>
+
+        <!-- ===== LOGO =====
+             🖼️ Pour afficher TON logo : dépose un fichier "logo.png" à côté de index.html.
+             Il remplacera automatiquement le logo texte ci-dessous.
+             (Utilise un logo dont tu as le droit : création perso, fan-art, ou logo fourni par l'équipe Revival.) -->
+        <div class="logo-wrap">
+          <img class="logo-img" src="logo.png" alt="Naruto Blazing Revival"
+               onload="document.body.classList.add('has-logo')" onerror="this.remove()" />
+          <div class="logo" aria-hidden="true">
+            <svg class="logo__swirl" viewBox="0 0 100 100"><use href="#swirl" /></svg>
+            <span class="logo__top">NARUTO</span>
+            <span class="logo__main" data-text="BLAZING">BLAZING</span>
+            <span class="logo__rev" data-text="REVIVAL">REVIVAL</span>
+          </div>
+        </div>
+
+        <div class="ribbon">Tuto iOS · Mac + SideStore</div>
+
+        <p class="hero__lead">
+          Tu veux rejouer à Blazing sur ton iPhone ? Ce guide fan-made t'explique <strong>tout, étape par étape</strong>,
+          même si tu n'as jamais installé d'app en dehors de l'App Store. <strong>Pas de jailbreak</strong>, juste ton Mac et un peu de chakra.
+        </p>
+
+        <div class="hero__cta">
+          <a class="btn" href="#etapes">
+            Voir le tuto
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7" /></svg>
+          </a>
+          <!-- 🔗 À REMPLIR : remplace href="#" par le lien d'invitation officiel du Discord Revival -->
+          <a class="btn btn--discord" href="#" data-placeholder target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.6 1.3a18.4 18.4 0 0 0-5.6 0L8.6 3a19.7 19.7 0 0 0-4.9 1.5C.6 9.2-.3 13.8.1 18.3a19.9 19.9 0 0 0 6 3l1.3-2a12.9 12.9 0 0 1-2-1l.5-.4a14.2 14.2 0 0 0 12.2 0l.5.4c-.6.4-1.3.7-2 1l1.3 2a19.8 19.8 0 0 0 6-3c.5-5.2-.8-9.8-3.6-13.9ZM8 15.5c-1.2 0-2.2-1.1-2.2-2.4S6.8 10.7 8 10.7s2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Zm8 0c-1.2 0-2.2-1.1-2.2-2.4s1-2.4 2.2-2.4 2.2 1.1 2.2 2.4-1 2.4-2.2 2.4Z" /></svg>
+            Rejoindre le Discord Revival
+          </a>
+        </div>
+
+        <p class="author">
+          <span class="author__seal" aria-hidden="true">筆</span>
+          Un guide créé par <a href="https://github.com/meardagoat" target="_blank" rel="noopener noreferrer">meardagoat</a>
+        </p>
+
+        <div class="hero__stats">
+          <span class="stat"><b>7</b> missions</span>
+          <span class="stat"><b>~25</b> minutes</span>
+          <span class="stat"><b>0</b> jailbreak</span>
+          <span class="stat"><b>0 €</b> à payer</span>
+        </div>
+
+        <!-- Le résumé ultra simple -->
+        <div class="plan">
+          <div class="plan__item reveal">
+            <span class="num">1</span>
+            <h3>Obtenir l'accès</h3>
+            <p>Tu rejoins le Discord du projet et tu récupères ton « laissez-passer » (un rôle).</p>
+          </div>
+          <div class="plan__item reveal">
+            <span class="num">2</span>
+            <h3>Installer SideStore</h3>
+            <p>Avec ton Mac, tu poses SideStore sur l'iPhone. C'est l'outil qui installe le jeu. À faire une seule fois.</p>
+          </div>
+          <div class="plan__item reveal">
+            <span class="num">3</span>
+            <h3>Installer & jouer</h3>
+            <p>SideStore installe le jeu, tu te connectes avec Discord… et c'est parti !</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#shuriken" /></svg></div>
+
+    <!-- ===================== 2. LEXIQUE (vulgarisation) ===================== -->
+    <section id="lexique">
+      <div class="narrow">
+        <div class="sec-title reveal">
+          <span class="seal" aria-hidden="true">書</span>
+          <div>
+            <p class="sec-kicker">C'est quoi tout ça ?</p>
+            <h2>Le lexique du ninja</h2>
+          </div>
+        </div>
+        <p class="sec-intro reveal">Pas de panique devant les mots bizarres. Voilà ce que chaque terme veut dire, <strong>en une phrase</strong>.</p>
+
+        <div class="scroll scroll--rods reveal">
+          <dl class="lexicon">
+            <div>
+              <dt><span aria-hidden="true">📦</span>IPA</dt>
+              <dd>Le fichier d'installation d'une app iPhone. C'est l'équivalent d'un <strong>.exe</strong> sur PC (et l'<strong>APK</strong> c'est la version Android, pas pour toi ici).</dd>
+            </div>
+            <div>
+              <dt><span aria-hidden="true">🛠️</span>SideStore</dt>
+              <dd>Une app qui installe des apps <strong>hors de l'App Store</strong>, en les « signant » avec ton compte Apple gratuit.</dd>
+            </div>
+            <div>
+              <dt><span aria-hidden="true">🛡️</span>LocalDevVPN</dt>
+              <dd>Un « faux » VPN qui reste <strong>dans ton iPhone</strong> : il ne change pas ton IP, il permet juste à SideStore de fonctionner. Il doit être <strong>activé</strong> quand tu installes ou rafraîchis une app.</dd>
+            </div>
+            <div>
+              <dt><span aria-hidden="true">💻</span>iloader</dt>
+              <dd>Un petit logiciel pour Mac qui sert <strong>une seule fois</strong> : poser SideStore sur ton iPhone via le câble USB.</dd>
+            </div>
+            <div>
+              <dt><span aria-hidden="true">🔓</span>Mode développeur</dt>
+              <dd>Un interrupteur caché dans les Réglages iOS qui <strong>autorise les apps hors App Store</strong> à se lancer.</dd>
+            </div>
+            <div>
+              <dt><span aria-hidden="true">🎟️</span>Rôle Discord</dt>
+              <dd>Ton <strong>laissez-passer</strong>. Sans lui, le serveur du jeu refuse ta connexion (tu restes bloqué à l'écran titre).</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#shuriken" /></svg></div>
+
+    <!-- ===================== 3. PRÉREQUIS ===================== -->
+    <section id="prerequis">
+      <div class="container">
+        <div class="sec-title reveal">
+          <span class="seal" aria-hidden="true">具</span>
+          <div>
+            <p class="sec-kicker">Avant de partir en mission</p>
+            <h2>L'équipement du ninja</h2>
+          </div>
+        </div>
+        <p class="sec-intro reveal">Vérifie que tu as tout ça <strong>avant de commencer</strong>. SideStore et LocalDevVPN sont gratuits, on les installe pendant le tuto.</p>
+
+        <ul class="inventory">
+          <li class="item reveal">
+            <div class="item__icon" aria-hidden="true">📱</div>
+            <div><em>Obligatoire</em><strong>iPhone sous iOS 16 ou plus</strong><span>Avec un code de déverrouillage activé.</span></div>
+          </li>
+          <li class="item reveal">
+            <div class="item__icon" aria-hidden="true">💻</div>
+            <div><em>Obligatoire</em><strong>Un Mac + câble USB</strong><span>Pour télécharger le jeu et installer SideStore (une seule fois).</span></div>
+          </li>
+          <li class="item reveal">
+            <div class="item__icon" aria-hidden="true">🍎</div>
+            <div><em>Obligatoire</em><strong>Un compte Apple</strong><span>Un compte gratuit suffit. Tu peux en créer un 2ᵉ juste pour ça si tu préfères.</span></div>
+          </li>
+          <li class="item reveal">
+            <div class="item__icon" aria-hidden="true">📶</div>
+            <div><em>Obligatoire</em><strong>Du Wi-Fi</strong><span>La 4G/5G ne suffit pas pour installer avec SideStore.</span></div>
+          </li>
+          <li class="item reveal">
+            <div class="item__icon" aria-hidden="true">💬</div>
+            <div><em>Obligatoire</em><strong>Un compte Discord</strong><span>Pour rejoindre le serveur Revival et obtenir l'accès au jeu.</span></div>
+          </li>
+          <li class="item reveal">
+            <div class="item__icon" aria-hidden="true">🛠️</div>
+            <div><em>Pendant le tuto</em><strong>SideStore + LocalDevVPN</strong><span>Les deux outils gratuits qui font tout le travail.</span></div>
+          </li>
+        </ul>
+
+        <div class="notice reveal">
+          <span class="notice__icon" aria-hidden="true">🔥</span>
+          <p><strong>L'accès au jeu passe par le Discord officiel du projet.</strong> Tu dois le rejoindre, suivre leurs instructions pour obtenir le rôle d'accès, puis relier ton compte Discord dans le jeu.</p>
+        </div>
+        <div class="notice notice--blue reveal">
+          <span class="notice__icon" aria-hidden="true">🔗</span>
+          <p><strong>Télécharge le jeu (APK/IPA) uniquement via les liens officiels du projet</strong>, publiés sur le Discord. Jamais depuis un lien trouvé ailleurs.</p>
+        </div>
+
+        <!-- 🖼️ Fan-art original dessiné en SVG (aucun asset officiel).
+             Pour mettre ta propre image à la place : remplace tout le <svg>…</svg> par <img src="fanart.jpg" alt="…"> -->
+        <figure class="fanart reveal">
+          <svg viewBox="0 0 1200 500" role="img" aria-labelledby="fanart-title">
+            <title id="fanart-title">Fan-art : un ninja à l'écharpe orange debout sur un toit, devant une pleine lune, au-dessus d'un village la nuit</title>
+            <defs>
+              <linearGradient id="fa-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#140b26" />
+                <stop offset=".5" stop-color="#43183a" />
+                <stop offset=".78" stop-color="#b8400f" />
+                <stop offset="1" stop-color="#f59e0b" />
+              </linearGradient>
+              <radialGradient id="fa-glow">
+                <stop offset="0" stop-color="#ffd9a0" stop-opacity=".7" />
+                <stop offset=".55" stop-color="#ff9d2e" stop-opacity=".18" />
+                <stop offset="1" stop-color="#ff7b00" stop-opacity="0" />
+              </radialGradient>
+              <radialGradient id="fa-moon" cx=".4" cy=".35">
+                <stop offset="0" stop-color="#fff7e6" />
+                <stop offset=".6" stop-color="#ffd48a" />
+                <stop offset="1" stop-color="#f5a524" />
+              </radialGradient>
+              <linearGradient id="fa-fog" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#ff7b00" stop-opacity="0" />
+                <stop offset="1" stop-color="#ff7b00" stop-opacity=".25" />
+              </linearGradient>
+              <path id="fa-leaf" d="M0 0 C6 -7 16 -7 22 0 C16 7 6 7 0 0 Z" />
+            </defs>
+
+            <!-- Ciel + étoiles -->
+            <rect width="1200" height="500" fill="url(#fa-sky)" />
+            <g fill="#fff">
+              <circle cx="90" cy="60" r="1.6" opacity=".8" /><circle cx="210" cy="120" r="1.2" opacity=".6" />
+              <circle cx="340" cy="45" r="1.8" opacity=".9" /><circle cx="470" cy="100" r="1.1" opacity=".5" />
+              <circle cx="560" cy="35" r="1.4" opacity=".7" /><circle cx="1060" cy="70" r="1.6" opacity=".8" />
+              <circle cx="1140" cy="140" r="1.1" opacity=".6" /><circle cx="990" cy="30" r="1.3" opacity=".7" />
+              <circle cx="150" cy="190" r="1" opacity=".4" /><circle cx="400" cy="170" r="1.2" opacity=".4" />
+            </g>
+
+            <!-- Lune -->
+            <circle class="fa-glow" cx="820" cy="210" r="250" fill="url(#fa-glow)" />
+            <circle cx="820" cy="210" r="128" fill="url(#fa-moon)" />
+            <g fill="#c96f1a" opacity=".16">
+              <circle cx="770" cy="170" r="20" /><circle cx="860" cy="250" r="28" /><circle cx="870" cy="150" r="11" /><circle cx="780" cy="265" r="9" />
+            </g>
+
+            <!-- Montagnes & collines -->
+            <path fill="#3a1630" d="M0 335 L110 255 L200 305 L330 215 L450 300 L540 250 L640 330 L1200 330 L1200 500 L0 500 Z" />
+            <path fill="#250c1d" d="M0 385 Q200 330 400 372 T800 362 T1200 352 L1200 500 L0 500 Z" />
+
+            <!-- Bâtiment principal (toit où se tient le ninja) -->
+            <g fill="#120610">
+              <path d="M645 334 Q820 314 995 334 L1040 352 Q820 340 600 352 Z" />
+              <rect x="680" y="346" width="280" height="160" />
+              <path d="M635 402 L1005 402 L1048 422 L592 422 Z" />
+            </g>
+            <g fill="#ffb347" opacity=".9">
+              <rect x="712" y="364" width="18" height="24" rx="2" /><rect x="760" y="364" width="18" height="24" rx="2" />
+              <rect x="862" y="364" width="18" height="24" rx="2" /><rect x="910" y="364" width="18" height="24" rx="2" />
+              <rect x="736" y="440" width="22" height="30" rx="2" /><rect x="884" y="440" width="22" height="30" rx="2" />
+            </g>
+
+            <!-- Ninja (silhouette originale) -->
+            <g fill="#0b0507">
+              <path d="M807 170 C785 158 768 172 740 158 C758 178 784 176 806 179 Z" />
+              <path d="M807 177 C788 178 772 194 746 188 C766 202 790 190 807 184 Z" />
+              <path d="M803 172 L795 154 L809 161 L809 144 L820 157 L830 142 L832 158 L846 151 L839 170 Z" />
+              <circle cx="820" cy="176" r="15" />
+              <path d="M806 190 L834 190 L843 201 L837 246 L805 246 L797 201 Z" />
+              <path d="M834 197 L856 226 L866 249 L858 252 L846 231 L828 207 Z" />
+              <path d="M806 197 L790 222 L796 245 L803 243 L800 225 L813 207 Z" />
+              <path d="M807 244 L835 244 L837 256 L853 300 L859 322 L844 322 L840 303 L821 266 L812 301 L801 322 L786 322 L794 298 L805 256 Z" />
+              <path d="M864 251 L868 251 L868 262 L872 266 L866 288 L860 266 L864 262 Z" />
+            </g>
+            <rect x="806" y="169" width="28" height="6" rx="2" fill="#9aa4b2" />
+            <path fill="#ff7b00" d="M803 186 L837 186 L839 197 L801 197 Z" />
+            <path fill="#ff7b00" d="M804 189 C790 197 768 205 726 196 C744 212 766 216 790 211 C770 224 750 238 716 238 C750 252 788 230 812 200 Z" />
+
+            <!-- Toits au premier plan + lanternes -->
+            <g fill="#06020a">
+              <path d="M0 432 L60 410 L150 410 L210 432 L210 500 L0 500 Z" />
+              <path d="M235 452 L305 426 L405 426 L475 452 L475 500 L235 500 Z" />
+              <path d="M1040 444 L1105 418 L1200 418 L1200 500 L1040 500 Z" />
+            </g>
+            <g>
+              <circle cx="110" cy="452" r="18" fill="#ff7b00" opacity=".25" /><ellipse cx="110" cy="452" rx="8" ry="11" fill="#e23a4f" />
+              <circle cx="355" cy="470" r="16" fill="#ff7b00" opacity=".25" /><ellipse cx="355" cy="470" rx="7" ry="10" fill="#e23a4f" />
+            </g>
+            <rect y="380" width="1200" height="120" fill="url(#fa-fog)" />
+
+            <!-- Feuilles qui volent -->
+            <g class="fa-leaves">
+              <use href="#fa-leaf" fill="#4ade80" transform="translate(520 150) rotate(-25)" />
+              <use href="#fa-leaf" fill="#22c55e" transform="translate(600 230) rotate(20) scale(.8)" />
+              <use href="#fa-leaf" fill="#ff9d2e" transform="translate(470 270) rotate(-60) scale(.7)" />
+              <use href="#fa-leaf" fill="#4ade80" transform="translate(1010 180) rotate(35) scale(.9)" />
+              <use href="#fa-leaf" fill="#22c55e" transform="translate(1080 280) rotate(-15) scale(.7)" />
+              <use href="#fa-leaf" fill="#ff9d2e" transform="translate(660 110) rotate(50) scale(.6)" />
+            </g>
+
+            <text x="1182" y="486" text-anchor="end" font-family="Dela Gothic One, Arial Black, sans-serif" font-size="15" fill="#fff" opacity=".65">Fan-art original · meardagoat</text>
+          </svg>
+        </figure>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#shuriken" /></svg></div>
+
+    <!-- ===================== 4. MISSIONS (ÉTAPES) ===================== -->
+    <section id="etapes">
+      <div class="narrow">
+        <div class="sec-title reveal">
+          <span class="seal" aria-hidden="true">任</span>
+          <div>
+            <p class="sec-kicker">Le tuto, pas à pas</p>
+            <h2>Les 7 missions d'installation</h2>
+          </div>
+        </div>
+        <p class="sec-intro reveal">
+          Fais-les <strong>dans l'ordre</strong>. Chaque mission indique <strong>sur quel appareil</strong> la faire et comment savoir si c'est réussi.
+          Le <strong>rang</strong> indique la difficulté : D = facile, A = la plus technique. Coche chaque mission terminée pour suivre ta progression.
+        </p>
+
+        <div class="progress" role="status" aria-live="polite">
+          <span class="progress__label">Chakra</span>
+          <div class="progress__bar"><div class="progress__fill"></div></div>
+          <span class="progress__count"><span class="js-done">0</span>/7</span>
+        </div>
+
+        <ol class="missions">
+
+          <!-- Mission 01 -->
+          <li class="mission reveal" data-id="1">
+            <article class="mission__card">
+              <header class="mission__head">
+                <span class="rank rank--D" title="Rang D – facile">D</span>
+                <span class="mission__no">Mission 01</span>
+                <span class="chips"><span class="chip">💬 Discord</span><span class="chip">⏱ 5 min</span></span>
+              </header>
+              <div class="mission__body">
+                <h3>Débloquer ton accès sur Discord</h3>
+                <p class="goal">Obtenir ton « laissez-passer » pour pouvoir jouer.</p>
+                <ul class="todo">
+                  <li>Rejoins le <strong>Discord officiel Naruto Blazing Revival</strong> (lien dans la section Liens).</li>
+                  <li>Lis le salon des règles et <strong>suis leur procédure</strong> pour obtenir le rôle d'accès.</li>
+                  <li>Repère le salon où sont postés <strong>les liens de téléchargement</strong> et le guide iOS : tu en auras besoin juste après.</li>
+                </ul>
+                <p class="check"><b>✅ C'est bon si :</b> le rôle apparaît sur ton profil dans le serveur.</p>
+              </div>
+              <div class="mission__foot"><button class="done-btn" type="button" aria-pressed="false"><span class="box">✓</span>Mission accomplie</button></div>
+              <span class="stamp" aria-hidden="true">完</span>
+            </article>
+          </li>
+
+          <!-- Mission 02 -->
+          <li class="mission reveal" data-id="2">
+            <article class="mission__card">
+              <header class="mission__head">
+                <span class="rank rank--D" title="Rang D – facile">D</span>
+                <span class="mission__no">Mission 02</span>
+                <span class="chips"><span class="chip">💻 Mac</span><span class="chip">⏱ 3 min</span></span>
+              </header>
+              <div class="mission__body">
+                <h3>Récupérer le jeu (le fichier IPA)</h3>
+                <p class="goal">Télécharger le fichier d'installation iPhone du jeu.</p>
+                <ul class="todo">
+                  <li>Sur le Discord, ouvre le <strong>lien officiel de l'IPA iOS</strong> (pas l'APK, c'est pour Android).</li>
+                  <li>Télécharge le fichier <strong>.ipa</strong> sur ton Mac.</li>
+                  <li>Envoie-le sur ton iPhone par <strong>AirDrop</strong>, puis choisis « Enregistrer dans Fichiers » (ou passe par iCloud Drive).</li>
+                </ul>
+                <p class="check"><b>✅ C'est bon si :</b> tu vois le fichier .ipa dans l'app <strong>Fichiers</strong> de ton iPhone.</p>
+              </div>
+              <div class="mission__foot"><button class="done-btn" type="button" aria-pressed="false"><span class="box">✓</span>Mission accomplie</button></div>
+              <span class="stamp" aria-hidden="true">完</span>
+            </article>
+          </li>
+
+          <!-- Mission 03 -->
+          <li class="mission reveal" data-id="3">
+            <article class="mission__card">
+              <header class="mission__head">
+                <span class="rank rank--A" title="Rang A – la plus technique">A</span>
+                <span class="mission__no">Mission 03</span>
+                <span class="chips"><span class="chip">💻 Mac</span><span class="chip">📱 iPhone</span><span class="chip">⏱ 10 min</span></span>
+              </header>
+              <div class="mission__body">
+                <h3>Installer SideStore (une seule fois)</h3>
+                <p class="goal">Poser sur ton iPhone l'outil qui installera le jeu.</p>
+                <ul class="todo">
+                  <li><span class="where">📱 iPhone</span>Installe <strong>LocalDevVPN</strong> depuis l'App Store, ouvre-le et appuie sur <strong>Connect</strong>. Si iOS demande d'autoriser le VPN : <strong>Autoriser</strong>.</li>
+                  <li><span class="where">💻 Mac</span>Télécharge et installe <strong>iloader</strong> (lien sur la doc officielle de SideStore, section Liens).</li>
+                  <li><span class="where">💻 Mac</span>Branche l'iPhone en USB et déverrouille-le. S'il demande « Faire confiance à cet ordinateur ? » → <strong>Se fier</strong>.</li>
+                  <li><span class="where">💻 Mac</span>Dans iloader : connecte-toi avec ton <strong>compte Apple</strong>, choisis ton iPhone, puis clique sur <strong>Install SideStore (Stable)</strong>.</li>
+                </ul>
+                <p class="tip">💡 L'icône SideStore apparaît mais <strong>ne s'ouvre pas encore</strong> ? C'est normal : les missions 04 et 05 vont la débloquer.</p>
+                <p class="check"><b>✅ C'est bon si :</b> l'icône SideStore est sur ton écran d'accueil.</p>
+              </div>
+              <div class="mission__foot"><button class="done-btn" type="button" aria-pressed="false"><span class="box">✓</span>Mission accomplie</button></div>
+              <span class="stamp" aria-hidden="true">完</span>
+            </article>
+          </li>
+
+          <!-- Mission 04 -->
+          <li class="mission reveal" data-id="4">
+            <article class="mission__card">
+              <header class="mission__head">
+                <span class="rank rank--C" title="Rang C – simple">C</span>
+                <span class="mission__no">Mission 04</span>
+                <span class="chips"><span class="chip">📱 iPhone</span><span class="chip">⏱ 1 min</span></span>
+              </header>
+              <div class="mission__body">
+                <h3>Faire confiance à ton profil</h3>
+                <p class="goal">Dire à l'iPhone que les apps installées avec ton compte Apple sont sûres.</p>
+                <div class="path" aria-label="Chemin dans les Réglages"><span>Réglages</span><i>›</i><span>Général</span><i>›</i><span>VPN et gestion de l'appareil</span></div>
+                <ul class="todo">
+                  <li>Dans « App de développeur », touche <strong>ton adresse Apple</strong>.</li>
+                  <li>Touche <strong>Faire confiance à…</strong> puis confirme. (Sur iOS 18 : « Autoriser et redémarrer » + ton code.)</li>
+                </ul>
+                <p class="check"><b>✅ C'est bon si :</b> ton compte est indiqué comme approuvé.</p>
+              </div>
+              <div class="mission__foot"><button class="done-btn" type="button" aria-pressed="false"><span class="box">✓</span>Mission accomplie</button></div>
+              <span class="stamp" aria-hidden="true">完</span>
+            </article>
+          </li>
+
+          <!-- Mission 05 -->
+          <li class="mission reveal" data-id="5">
+            <article class="mission__card">
+              <header class="mission__head">
+                <span class="rank rank--C" title="Rang C – simple">C</span>
+                <span class="mission__no">Mission 05</span>
+                <span class="chips"><span class="chip">📱 iPhone</span><span class="chip">⏱ 2 min</span></span>
+              </header>
+              <div class="mission__body">
+                <h3>Activer le Mode développeur</h3>
+                <p class="goal">Autoriser les apps hors App Store à se lancer (obligatoire depuis iOS 16).</p>
+                <div class="path" aria-label="Chemin dans les Réglages"><span>Réglages</span><i>›</i><span>Confidentialité et sécurité</span><i>›</i><span>Mode développeur</span></div>
+                <ul class="todo">
+                  <li>Descends <strong>tout en bas</strong> de « Confidentialité et sécurité » et active <strong>Mode développeur</strong>.</li>
+                  <li>L'iPhone <strong>redémarre</strong>. Une fois rallumé, touche <strong>Activer</strong> et tape ton code.</li>
+                </ul>
+                <p class="tip">💡 Tu ne vois pas « Mode développeur » ? Vérifie que la mission 03 est bien terminée : l'option n'apparaît qu'après l'installation de SideStore.</p>
+                <p class="check"><b>✅ C'est bon si :</b> SideStore s'ouvre quand tu touches son icône.</p>
+              </div>
+              <div class="mission__foot"><button class="done-btn" type="button" aria-pressed="false"><span class="box">✓</span>Mission accomplie</button></div>
+              <span class="stamp" aria-hidden="true">完</span>
+            </article>
+          </li>
+
+          <!-- Mission 06 -->
+          <li class="mission reveal" data-id="6">
+            <article class="mission__card">
+              <header class="mission__head">
+                <span class="rank rank--B" title="Rang B – moyen">B</span>
+                <span class="mission__no">Mission 06</span>
+                <span class="chips"><span class="chip">📱 iPhone</span><span class="chip">⏱ 5 min</span></span>
+              </header>
+              <div class="mission__body">
+                <h3>Installer le jeu avec SideStore</h3>
+                <p class="goal">Transformer le fichier .ipa en vraie app sur ton écran d'accueil.</p>
+                <ul class="todo">
+                  <li>Vérifie que tu es en <strong>Wi-Fi</strong> et que <strong>LocalDevVPN est connecté</strong>.</li>
+                  <li>Ouvre <strong>SideStore</strong> et connecte-toi avec le <strong>même compte Apple</strong> que dans iloader.</li>
+                  <li><strong>Première fois seulement :</strong> dans l'onglet <strong>My Apps</strong>, touche le compteur <strong>« 7 DAYS »</strong> à côté de SideStore. Si on te propose un nouveau certificat, accepte.</li>
+                  <li>Toujours dans My Apps, touche le <strong>+</strong> en haut et choisis le fichier <strong>.ipa</strong> du jeu.</li>
+                  <li>Attends la fin de l'installation, sans quitter SideStore.</li>
+                </ul>
+                <p class="check"><b>✅ C'est bon si :</b> l'icône du jeu apparaît sur ton écran d'accueil.</p>
+              </div>
+              <div class="mission__foot"><button class="done-btn" type="button" aria-pressed="false"><span class="box">✓</span>Mission accomplie</button></div>
+              <span class="stamp" aria-hidden="true">完</span>
+            </article>
+          </li>
+
+          <!-- Mission 07 -->
+          <li class="mission reveal" data-id="7">
+            <article class="mission__card">
+              <header class="mission__head">
+                <span class="rank rank--D" title="Rang D – facile">D</span>
+                <span class="mission__no">Mission 07 · Finale</span>
+                <span class="chips"><span class="chip">📱 iPhone</span><span class="chip">⏱ 2 min</span></span>
+              </header>
+              <div class="mission__body">
+                <h3>Se connecter avec Discord et jouer</h3>
+                <p class="goal">Prouver au jeu que tu as bien ton laissez-passer.</p>
+                <ul class="todo">
+                  <li>Lance le jeu.</li>
+                  <li>Choisis <strong>Login with Discord</strong> et connecte-toi avec le compte qui a le rôle (mission 01).</li>
+                  <li>Laisse les données du jeu se télécharger.</li>
+                </ul>
+                <p class="check"><b>✅ C'est bon si :</b> tu passes l'écran titre. Bienvenue au village, ninja ! 🍥</p>
+              </div>
+              <div class="mission__foot"><button class="done-btn" type="button" aria-pressed="false"><span class="box">✓</span>Mission accomplie</button></div>
+              <span class="stamp" aria-hidden="true">完</span>
+            </article>
+          </li>
+        </ol>
+
+        <div class="scroll scroll--rods reminder reveal">
+          <h3>⏳ Le piège des 7 jours</h3>
+          <p>
+            Avec un compte Apple gratuit, le jeu <strong>arrête de s'ouvrir au bout de 7 jours</strong>. Pas grave :
+            active <strong>LocalDevVPN</strong>, ouvre <strong>SideStore</strong> › <strong>My Apps</strong> et touche le compteur de jours à côté du jeu
+            pour le « recharger ». Fais-le une fois par semaine et tu ne perdras jamais l'accès.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#shuriken" /></svg></div>
+
+    <!-- ===================== 5. TROUBLESHOOTING ===================== -->
+    <section id="troubleshooting">
+      <div class="narrow">
+        <div class="sec-title reveal">
+          <span class="seal" aria-hidden="true">解</span>
+          <div>
+            <p class="sec-kicker">Kai ! Dissiper le genjutsu</p>
+            <h2>Problèmes fréquents</h2>
+          </div>
+        </div>
+        <p class="sec-intro reveal">Un souci ? Touche ton problème pour voir la solution.</p>
+
+        <div class="faq">
+          <details class="reveal">
+            <summary><span class="q" aria-hidden="true">⛔</span>Le jeu reste bloqué à l'écran titre</summary>
+            <div class="faq__answer">
+              <p>Le jeu ne te reconnaît pas encore.</p>
+              <ul>
+                <li>Vérifie que tu as bien <strong>le rôle d'accès</strong> sur le Discord (mission 01).</li>
+                <li>Vérifie que tu t'es connecté avec <strong>le même compte Discord</strong> que celui qui a le rôle.</li>
+                <li>Déconnecte-toi, reconnecte-toi, et regarde les annonces du Discord (maintenance en cours ?).</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="reveal">
+            <summary><span class="q" aria-hidden="true">📵</span>L'app ne s'ouvre pas / « Développeur non approuvé »</summary>
+            <div class="faq__answer">
+              <p>iOS bloque encore l'app.</p>
+              <ul>
+                <li>Refais la <strong>mission 04</strong> (faire confiance au profil).</li>
+                <li>Vérifie que le <strong>Mode développeur</strong> est activé (mission 05).</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="reveal">
+            <summary><span class="q" aria-hidden="true">⌛</span>Le jeu marchait, mais ne s'ouvre plus</summary>
+            <div class="faq__answer">
+              <p>La signature a sûrement expiré (7 jours).</p>
+              <ul>
+                <li>Active <strong>LocalDevVPN</strong>, ouvre <strong>SideStore</strong> › My Apps et touche le compteur de jours à côté du jeu.</li>
+                <li>Si SideStore lui-même a expiré, il faut le réinstaller depuis le Mac avec iloader (mission 03).</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="reveal">
+            <summary><span class="q" aria-hidden="true">⚠️</span>Erreur pendant l'installation dans SideStore</summary>
+            <div class="faq__answer">
+              <p>Quelque chose bloque l'installation.</p>
+              <ul>
+                <li>Vérifie que <strong>LocalDevVPN est connecté</strong> et que tu es en <strong>Wi-Fi</strong>.</li>
+                <li>Vérifie que tu as <strong>la bonne IPA</strong> (la plus récente, depuis le lien officiel).</li>
+                <li>Un compte Apple gratuit = <strong>3 apps max</strong> installées via SideStore (SideStore compte dedans). Supprime-en une si besoin.</li>
+                <li>Toujours bloqué ? Suis le <strong>guide iOS officiel</strong> du Discord Revival ou demande de l'aide dans leur salon support.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details class="reveal">
+            <summary><span class="q" aria-hidden="true">🔌</span>iloader ne voit pas mon iPhone</summary>
+            <div class="faq__answer">
+              <p>Le Mac et l'iPhone ne se parlent pas encore.</p>
+              <ul>
+                <li>Déverrouille l'iPhone et réponds <strong>Se fier</strong> à « Faire confiance à cet ordinateur ? ».</li>
+                <li>Essaie un autre câble ou un autre port USB (évite les hubs).</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#shuriken" /></svg></div>
+
+    <!-- ===================== 6. DISCLAIMER & SÉCURITÉ ===================== -->
+    <section id="disclaimer">
+      <div class="narrow">
+        <div class="sec-title reveal">
+          <span class="seal" aria-hidden="true">掟</span>
+          <div>
+            <p class="sec-kicker">Disclaimer & sécurité</p>
+            <h2>Les règles du shinobi</h2>
+          </div>
+        </div>
+
+        <div class="scroll scroll--rods reveal">
+          <ul class="rules">
+            <li><span class="ico" aria-hidden="true">🍥</span><span><strong>Projet fan-made, non officiel.</strong> Naruto Blazing Revival n'a aucun lien avec Bandai Namco, Shueisha ou les ayants droit de Naruto.</span></li>
+            <li><span class="ico" aria-hidden="true">🔒</span><span><strong>Ne donne jamais tes identifiants</strong> Apple ou Discord à quelqu'un, ni tes codes de vérification. Aucun membre du staff ne te les demandera. Ton compte Apple se tape uniquement dans iloader et SideStore.</span></li>
+            <li><span class="ico" aria-hidden="true">✅</span><span><strong>Télécharge uniquement depuis les liens officiels.</strong> Un IPA/APK partagé ailleurs peut avoir été modifié.</span></li>
+            <li><span class="ico" aria-hidden="true">📢</span><span><strong>Ce site est un guide informatif.</strong> La procédure peut changer : en cas de doute, ce sont toujours les annonces et guides du Discord Revival qui ont raison.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider" aria-hidden="true"><svg viewBox="0 0 100 100"><use href="#shuriken" /></svg></div>
+
+    <!-- ===================== 7. RESSOURCES / LIENS ===================== -->
+    <section id="ressources">
+      <div class="container">
+        <div class="sec-title reveal">
+          <span class="seal" aria-hidden="true">巻</span>
+          <div>
+            <p class="sec-kicker">Ressources</p>
+            <h2>Les parchemins utiles</h2>
+          </div>
+        </div>
+
+        <div class="res-grid">
+          <!-- 🔗 À REMPLIR : lien d'invitation du Discord officiel -->
+          <a class="res reveal" href="#" data-placeholder target="_blank" rel="noopener noreferrer">
+            <span class="res__icon" aria-hidden="true">💬</span>
+            <h3>Discord Naruto Blazing Revival</h3>
+            <p>Le QG du projet : annonces, rôle d'accès, liens de téléchargement et support.</p>
+            <span class="res__go">Rejoindre →</span>
+          </a>
+
+          <!-- 🔗 À REMPLIR : lien vers le salon / message du guide iOS -->
+          <a class="res reveal" href="#" data-placeholder target="_blank" rel="noopener noreferrer">
+            <span class="res__icon" aria-hidden="true">📜</span>
+            <h3>Guide détaillé iOS (Discord)</h3>
+            <p>La procédure officielle et toujours à jour, écrite par l'équipe du projet.</p>
+            <span class="res__go">Lire le guide →</span>
+          </a>
+
+          <!-- 🔗 À REMPLIR : lien vers une vidéo ou une playlist YouTube -->
+          <a class="res reveal" href="#" data-placeholder target="_blank" rel="noopener noreferrer">
+            <span class="res__icon" aria-hidden="true">🎬</span>
+            <h3>Guides vidéo (YouTube)</h3>
+            <p>Pour suivre l'installation à l'écran, étape par étape.</p>
+            <span class="res__go">Regarder →</span>
+          </a>
+
+          <a class="res reveal" href="https://docs.sidestore.io/docs/installation/prerequisites" target="_blank" rel="noopener noreferrer">
+            <span class="res__icon" aria-hidden="true">🛠️</span>
+            <h3>Doc officielle SideStore</h3>
+            <p>Téléchargement d'iloader et de LocalDevVPN, et aide en cas de souci avec SideStore.</p>
+            <span class="res__go">Ouvrir la doc →</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>Guide créé par <a href="https://github.com/meardagoat" target="_blank" rel="noopener noreferrer"><strong>meardagoat</strong></a> · Fan-made, non officiel · Fait avec 🍥</p>
+      <p>Naruto est une marque de ses ayants droit respectifs. Aucun visuel officiel n'est utilisé sur ce site.</p>
+    </div>
+  </footer>
+
+  <a class="back-top" href="#top" aria-label="Retour en haut"><svg viewBox="0 0 100 100" aria-hidden="true"><use href="#shuriken" /></svg></a>
+  <div class="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    /* JS minimal : braises, apparition au scroll, suivi des missions, nav active, liens à configurer */
+    (function () {
+      document.documentElement.classList.add('js');
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // 1. Braises qui montent dans le hero
+      var embers = document.querySelector('.embers');
+      if (embers && !reduce) {
+        for (var i = 0; i < 26; i++) {
+          var e = document.createElement('i');
+          e.style.left = Math.random() * 100 + '%';
+          e.style.setProperty('--s', (2 + Math.random() * 4).toFixed(1) + 'px');
+          e.style.setProperty('--d', (5 + Math.random() * 6).toFixed(1) + 's');
+          e.style.setProperty('--delay', (Math.random() * 8).toFixed(1) + 's');
+          e.style.setProperty('--dx', (Math.random() * 120 - 60).toFixed(0) + 'px');
+          embers.appendChild(e);
+        }
+      }
+
+      // 2. Apparition des blocs au scroll
+      var reveals = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (en) {
+            if (en.isIntersecting) { en.target.classList.add('is-visible'); io.unobserve(en.target); }
+          });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+        reveals.forEach(function (el) { io.observe(el); });
+      } else {
+        reveals.forEach(function (el) { el.classList.add('is-visible'); });
+      }
+
+      // 3. Missions cochées (mémorisées dans le navigateur)
+      var KEY = 'nbr-missions';
+      var saved = [];
+      try { saved = JSON.parse(localStorage.getItem(KEY)) || []; } catch (err) {}
+      var missions = document.querySelectorAll('.mission');
+      var fill = document.querySelector('.progress__fill');
+      var count = document.querySelector('.js-done');
+
+      function refresh() {
+        var done = document.querySelectorAll('.mission.is-done').length;
+        fill.style.width = (done / missions.length * 100) + '%';
+        count.textContent = done;
+        var ids = Array.prototype.map.call(document.querySelectorAll('.mission.is-done'), function (m) { return m.dataset.id; });
+        try { localStorage.setItem(KEY, JSON.stringify(ids)); } catch (err) {}
+      }
+      missions.forEach(function (m) {
+        var btn = m.querySelector('.done-btn');
+        if (saved.indexOf(m.dataset.id) !== -1) { m.classList.add('is-done'); btn.setAttribute('aria-pressed', 'true'); }
+        btn.addEventListener('click', function () {
+          var on = m.classList.toggle('is-done');
+          btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+          refresh();
+          if (on && document.querySelectorAll('.mission.is-done').length === missions.length) {
+            showToast('🍥 Toutes les missions sont accomplies, bon jeu ninja !');
+          }
+        });
+      });
+      refresh();
+
+      // 4. Lien actif dans la nav + bouton retour en haut
+      var navLinks = document.querySelectorAll('.nav__links a');
+      var backTop = document.querySelector('.back-top');
+      function onScroll() {
+        var y = window.scrollY + 140;
+        navLinks.forEach(function (a) {
+          var sec = document.querySelector(a.getAttribute('href'));
+          if (sec) a.classList.toggle('is-active', y >= sec.offsetTop && y < sec.offsetTop + sec.offsetHeight);
+        });
+        backTop.classList.toggle('is-visible', window.scrollY > 700);
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+
+      // 5. Liens pas encore remplis (href="#") : petit message au lieu de remonter en haut
+      var toast = document.querySelector('.toast'), timer;
+      function showToast(msg) {
+        toast.textContent = msg;
+        toast.classList.add('is-visible');
+        clearTimeout(timer);
+        timer = setTimeout(function () { toast.classList.remove('is-visible'); }, 3200);
+      }
+      document.querySelectorAll('[data-placeholder]').forEach(function (a) {
+        a.addEventListener('click', function (ev) {
+          if (a.getAttribute('href') === '#') { ev.preventDefault(); showToast('🔗 Lien bientôt disponible. Rends-toi sur le Discord Revival en attendant !'); }
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
